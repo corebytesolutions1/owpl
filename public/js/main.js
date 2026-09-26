@@ -180,27 +180,78 @@ if (containerStack && window.gsap && window.ScrollTrigger) {
   });
 }
 
-// ---------- Notice board search + filter ----------
+// ---------- Notice board search + filter + pagination ----------
 const noticeSearch = document.getElementById("notice-search");
 const noticeCategory = document.getElementById("notice-category");
-const noticeCards = document.querySelectorAll(".notice-card");
+const noticeCards = Array.from(document.querySelectorAll(".notice-card"));
 const noResults = document.getElementById("no-results");
+const noticePagination = document.getElementById("notice-pagination");
+const NOTICES_PER_PAGE = 6;
+let noticeCurrentPage = 1;
 
-function filterNotices() {
-  if (!noticeCards.length) return;
+function getFilteredNotices() {
   const q = (noticeSearch?.value || "").toLowerCase().trim();
   const cat = noticeCategory?.value || "all";
-  let visibleCount = 0;
 
-  noticeCards.forEach((card) => {
-    const matchesText = card.dataset.title.includes(q);
+  return noticeCards.filter((card) => {
+    const matchesText =
+      !q || card.dataset.title.includes(q) || card.dataset.description.includes(q);
     const matchesCat = cat === "all" || card.dataset.category === cat;
-    const show = matchesText && matchesCat;
-    card.style.display = show ? "" : "none";
-    if (show) visibleCount++;
+    return matchesText && matchesCat;
+  });
+}
+
+function renderNoticePage() {
+  if (!noticeCards.length) return;
+
+  const filtered = getFilteredNotices();
+  const totalPages = Math.max(1, Math.ceil(filtered.length / NOTICES_PER_PAGE));
+  noticeCurrentPage = Math.min(noticeCurrentPage, totalPages);
+
+  const start = (noticeCurrentPage - 1) * NOTICES_PER_PAGE;
+  const pageSlice = filtered.slice(start, start + NOTICES_PER_PAGE);
+
+  // Show only the current page's matches; hide everything else.
+  noticeCards.forEach((card) => {
+    card.style.display = pageSlice.includes(card) ? "" : "none";
   });
 
-  if (noResults) noResults.classList.toggle("hidden", visibleCount !== 0);
+  if (noResults) noResults.classList.toggle("hidden", filtered.length !== 0);
+
+  // Build pagination controls.
+  if (noticePagination) {
+    noticePagination.innerHTML = "";
+    if (totalPages <= 1) return;
+
+    const makeBtn = (label, page, disabled, active) => {
+      const btn = document.createElement("button");
+      btn.textContent = label;
+      btn.disabled = !!disabled;
+      btn.className = active
+        ? "w-9 h-9 rounded-md bg-accent text-white text-sm font-semibold"
+        : "w-9 h-9 rounded-md border border-black/10 text-sm font-medium hover:border-accent disabled:opacity-40 disabled:cursor-not-allowed";
+      if (!disabled) {
+        btn.addEventListener("click", () => {
+          noticeCurrentPage = page;
+          renderNoticePage();
+          document.getElementById("notice-list")?.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+      }
+      return btn;
+    };
+
+    noticePagination.appendChild(makeBtn("‹", noticeCurrentPage - 1, noticeCurrentPage === 1, false));
+    for (let p = 1; p <= totalPages; p++) {
+      noticePagination.appendChild(makeBtn(String(p), p, false, p === noticeCurrentPage));
+    }
+    noticePagination.appendChild(makeBtn("›", noticeCurrentPage + 1, noticeCurrentPage === totalPages, false));
+  }
+}
+
+function filterNotices() {
+  noticeCurrentPage = 1; // any new search/filter starts back at page 1
+  renderNoticePage();
 }
 noticeSearch?.addEventListener("input", filterNotices);
 noticeCategory?.addEventListener("change", filterNotices);
+renderNoticePage(); // initial paint

@@ -19,7 +19,7 @@
 
     <div id="notice-list" class="space-y-5">
       <% notices.sort((a,b) => b.pinned - a.pinned).forEach((n, i) => { %>
-        <div data-aos="fade-up" data-aos-delay="<%= (i % 4) * 60 %>" class="notice-card p-6 rounded-xl border border-black/5 hover:border-accent/30 hover:shadow-md transition-all relative" data-category="<%= n.category.toLowerCase() %>" data-title="<%= n.title.toLowerCase() %>">
+        <div data-aos="fade-up" data-aos-delay="<%= (i % 4) * 60 %>" class="notice-card p-6 rounded-xl border border-black/5 hover:border-accent/30 hover:shadow-md transition-all relative" data-category="<%= n.category.toLowerCase() %>" data-title="<%= n.title.toLowerCase() %>" data-description="<%= n.description.toLowerCase() %>">
           <div class="flex flex-wrap items-start justify-between gap-3 mb-3">
             <div class="flex items-center gap-2 flex-wrap">
               <% if (n.pinned) { %><i data-lucide="pin" class="w-4 h-4 text-accent"></i><% } %>
@@ -39,8 +39,6 @@
 
     <p id="no-results" class="hidden text-center text-steel text-sm py-10">No notices match your search.</p>
 
-    <div class="text-center mt-12" data-aos="fade-up">
-      <a href="/future/circulars" class="text-accent text-sm font-semibold hover:underline">View Notice Archive &rarr;</a>
-    </div>
+    <div id="notice-pagination" class="flex items-center justify-center gap-2 mt-12"></div>
   </div>
 </section>

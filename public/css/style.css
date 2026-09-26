@@ -1,0 +1,129 @@
+/* Prevent layout shift while preloader is active */
+html.is-loading {
+  overflow: hidden;
+}
+
+#preloader {
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+#preloader.hide {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+@keyframes fillbox {
+  0%   { height: 0%; }
+  50%  { height: 100%; }
+  100% { height: 0%; }
+}
+.animate-fillbox {
+  animation: fillbox 1.6s ease-in-out infinite;
+}
+
+/* Header background transition on scroll (home page starts transparent) */
+#site-header.scrolled {
+  background-color: var(--navy, #0B1E3A);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
+
+/* Glassmorphism utility */
+.glass {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Gallery lightbox display state */
+#lightbox.flex {
+  display: flex;
+}
+
+/* Toast animation */
+#toast.show {
+  animation: toastIn 0.3s ease forwards;
+}
+@keyframes toastIn {
+  from { transform: translateY(20px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+
+/* ============================================================
+   Container drop/stack (home page) — GSAP sets the transform,
+   this just defines the visual shape of each "container".
+   ============================================================ */
+#container-stack {
+  perspective: 1000px;
+}
+.container-drop {
+  opacity: 0;
+  will-change: transform, opacity;
+}
+.container-box {
+  height: 88px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-family: 'Sora', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  font-size: 0.8rem;
+  box-shadow: 0 12px 24px rgba(11, 30, 58, 0.25);
+  background-image:
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.08) 0 2px, transparent 2px 26px);
+}
+
+/* ============================================================
+   Road connectivity — trailer driving across the route line
+   ============================================================ */
+.trailer-track {
+  position: relative;
+  overflow: hidden;
+}
+.trailer-icon {
+  animation: trailerDrive 5s linear infinite;
+}
+@keyframes trailerDrive {
+  0%   { transform: translateX(-10%); }
+  50%  { transform: translateX(10%); }
+  100% { transform: translateX(-10%); }
+}
+
+/* ============================================================
+   Rail connectivity — train moving along the connection lines
+   ============================================================ */
+.rail-track {
+  position: relative;
+}
+.train-icon {
+  animation: trainMove 4s ease-in-out infinite;
+}
+@keyframes trainMove {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+.rail-pulse {
+  animation: railPulse 2.2s ease-in-out infinite;
+}
+@keyframes railPulse {
+  0%, 100% { opacity: 0.3; }
+  50%      { opacity: 1; }
+}
+
+/* Infrastructure — subtle crane sway on icon */
+.crane-sway {
+  animation: craneSway 3.5s ease-in-out infinite;
+  transform-origin: top center;
+}
+@keyframes craneSway {
+  0%, 100% { transform: rotate(-3deg); }
+  50%      { transform: rotate(3deg); }
+}

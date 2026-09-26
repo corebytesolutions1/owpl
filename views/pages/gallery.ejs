@@ -1,0 +1,51 @@
+<%- include('../partials/breadcrumb', { pageTitle: 'Image Gallery' }) %>
+
+<section class="py-24 px-5 lg:px-8 bg-white">
+  <div class="max-w-7xl mx-auto">
+
+    <!-- Filters -->
+    <div data-aos="fade-up" class="flex flex-wrap gap-3 mb-12" id="gallery-filters">
+      <% ["Images"].forEach((cat, i) => { %>
+        <button class="filter-btn <%= i === 0 ? 'bg-accent text-white' : 'bg-[#F5F7FA] text-navy hover:bg-navy/10' %> text-sm font-medium px-5 py-2.5 rounded-full transition" data-filter="<%= cat.toLowerCase() %>"><%= cat %></button>
+      <% }) %>
+    </div>
+
+    <!-- Grid -->
+    <div id="gallery-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      <% const items = [
+        ["Main Gate","main-gate.jpg","Main Gate"],
+        ["Godown","Godown.jpg","Godown overview"],
+        ["Cargo","cargo.jpg","Cargo handling area"],
+        ["General Warehouse","Godown1.jpeg","General warehousing space"],
+        ["Weightbridge","weightbrigde.jpg","Customs examination zone"],
+        ["Yard","Yard1.jpg","Yard"],
+        ["Yard-2","Yard.jpg","Yard"],
+        ["Yard-3","yard3.jpg","Yard-3"],
+        ["Exim godown","exim.jpg","Exim Godown"],
+        ["Customs Office","customs.jpeg","Customs Office"],
+        ["Customs Office","customs1.jpeg","Customs Office"],
+        ["Customs Office","customs2.jpeg","Customs Office"],
+      ]; %>
+      <% items.forEach((it, i) => { %>
+        <button data-aos="fade-up" data-aos-delay="<%= (i % 3) * 80 %>" class="gallery-item text-left rounded-xl overflow-hidden group relative" data-category="<%= it[0].toLowerCase() %>" data-src="/images/<%= it[1] %>" data-caption="<%= it[2] %>">
+          <img src="/images/<%= it[1] %>" alt="<%= it[2] %>" loading="lazy" class="w-full h-56 object-cover group-hover:scale-105 transition duration-500">
+          <div class="absolute inset-0 bg-navy/0 group-hover:bg-navy/40 transition flex items-center justify-center">
+            <i data-lucide="expand" class="w-6 h-6 text-white opacity-0 group-hover:opacity-100 transition"></i>
+          </div>
+          <span class="absolute bottom-3 left-3 text-white text-xs bg-navy/70 px-3 py-1 rounded-full"><%= it[0] %></span>
+        </button>
+      <% }) %>
+    </div>
+
+    <p class="text-center text-steel text-sm mt-14" data-aos="fade-up">
+      More photos coming soon — admin upload support is planned for this gallery.
+    </p>
+  </div>
+</section>
+
+<!-- Lightbox -->
+<div id="lightbox" class="hidden fixed inset-0 z-[90] bg-black/90 items-center justify-center p-6">
+  <button id="lightbox-close" class="absolute top-6 right-6 text-white"><i data-lucide="x" class="w-8 h-8"></i></button>
+  <img id="lightbox-img" src="" alt="" class="max-h-[85vh] max-w-full rounded-lg">
+  <p id="lightbox-caption" class="absolute bottom-8 text-white/70 text-sm"></p>
+</div>

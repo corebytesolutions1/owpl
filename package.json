@@ -1,0 +1,28 @@
+{
+  "name": "owpl-cfs-website",
+  "version": "1.0.0",
+  "description": "Overseas Warehousing Pvt. Ltd. (OWPL) - Container Freight Station corporate website",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.1138.0",
+    "compression": "^1.7.4",
+    "dotenv": "^16.6.1",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "express-ejs-layouts": "^2.5.1",
+    "express-rate-limit": "^7.4.0",
+    "helmet": "^7.1.0",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

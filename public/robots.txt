@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+
+Disallow: /future/
+
+Sitemap: https://www.owpl-cfs.com/sitemap.xml
